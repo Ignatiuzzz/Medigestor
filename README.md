@@ -1,4 +1,4 @@
-# PROYECTO N6: MY PICTURE
+# PROYECTO: MEDIGESTOR
 
 Este proyecto es una aplicación web desarrollada con el stack MERN (MongoDB, Express, React, Node.js). A continuación, se detallan los pasos necesarios para configurar y ejecutar el proyecto localmente.
 
@@ -19,7 +19,7 @@ El proyecto se divide en dos partes principales: el cliente (`client`) creado co
 ### Paso 2: Configuración de la Base de Datos
 
 1. Asegúrate de tener **MongoDB** instalado localmente o utiliza **MongoDB Atlas** para una base de datos en la nube.
-2. Crea una base de datos llamada `mypicture_db`.
+2. Crea una base de datos llamada `medigestor_db`.
 
 ### Paso 3: Configuración del Servidor y Conexión a la Base de Datos
 
