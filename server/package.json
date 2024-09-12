@@ -1,7 +1,7 @@
 {
-  "name": "medigestor",
+  "name": "medigestor_private",
   "version": "1.0.0",
-  "description": "MyPicture rest api",
+  "description": "medigestor_private rest api",
   "main": "server.js",
   "type": "module",
   "scripts": {

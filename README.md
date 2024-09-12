@@ -1,8 +1,8 @@
-# PROYECTO: MEDIGESTOR
+# PROYECTO N6: MY PICTURE
 
 Este proyecto es una aplicación web desarrollada con el stack MERN (MongoDB, Express, React, Node.js). A continuación, se detallan los pasos necesarios para configurar y ejecutar el proyecto localmente.
 
-![MongoDB](https://miro.medium.com/v2/resize:fit:720/format:webp/0*tdiQR1PX3wb-V_bG.jpg) ![Express NodeJs](https://i.ytimg.com/vi/wVo-UMit5Ig/maxresdefault.jpg) ![React](https://blog.scottlogic.com/dkerr/assets/featured/react.png)
+![MongoDB](https://www.turing.com/blog/wp-content/uploads/2022/02/Mongo-DB-Features.jpg) ![Express NodeJs](https://i.ytimg.com/vi/wVo-UMit5Ig/maxresdefault.jpg) ![React](https://blog.scottlogic.com/dkerr/assets/featured/react.png)
 
 ## Estructura del Proyecto
 
@@ -19,7 +19,7 @@ El proyecto se divide en dos partes principales: el cliente (`client`) creado co
 ### Paso 2: Configuración de la Base de Datos
 
 1. Asegúrate de tener **MongoDB** instalado localmente o utiliza **MongoDB Atlas** para una base de datos en la nube.
-2. Crea una base de datos llamada `medigestor_db`.
+2. Crea una base de datos llamada `mypicture_db`.
 
 ### Paso 3: Configuración del Servidor y Conexión a la Base de Datos
 
@@ -44,3 +44,8 @@ El proyecto se divide en dos partes principales: el cliente (`client`) creado co
 2. **Iniciar la aplicación React**:
    - En otra terminal, ve a `client` y ejecuta `npm start`.
 
+#DESARROLLADORES Y SUS FUNCIONES  
+Ignatiuzz (Ignacio Garcia) -> Diseno Frontend   
+TheBig-C (Cesar vera) -> Backend  
+DIN (Christian Mendoza) -> Backend  
+Manu20033 (Manuel Delgadillo) -> Diseno Frontend  
