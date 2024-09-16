@@ -4,7 +4,8 @@ import {
   deleteInvoiceController,
   getAllInvoicesController,
   getSingleInvoiceController,
-  updateInvoiceController
+  updateInvoiceController,
+  getInvoicesByUserController
 } from "../controllers/facturacionController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 
@@ -21,8 +22,9 @@ router.get("/get-invoices", getAllInvoicesController);
 
 // Obtener una factura por ID (sin restricción)
 router.get("/get-invoice/:id", getSingleInvoiceController);
+router.get("/get-invoices-by-user/:userId", getInvoicesByUserController);
 
 // Eliminar una factura (solo admin)
-router.delete("/delete-invoice/:id", requireSignIn, isAdmin, deleteInvoiceController);
+router.delete("/delete-invoices-by-user/:id", requireSignIn, isAdmin, deleteInvoiceController);
 
 export default router;

@@ -36,7 +36,7 @@ app.use("/api/v1/issuer", aseguradoras);
 app.use("/api/v1/payment", pagos);
 app.use("/api/v1/invoice", facturacion);
 const __dirname = path.resolve(); // Obtén la ruta absoluta del directorio actual
-app.use("/updates", express.static(path.join(__dirname, "updates"))); // Configura la ruta para servir archivos estáticos
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Configura la ruta para servir archivos estáticos
 // Test route
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to Medigestor</h1>");

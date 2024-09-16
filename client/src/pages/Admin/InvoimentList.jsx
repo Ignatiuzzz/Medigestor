@@ -34,27 +34,6 @@ const InvoiceList = () => {
     navigate("/dashboard/admin/add-invoice");
   };
 
-  const downloadPDF = async (invoice) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/uploads/${encodeURIComponent(invoice.invoiceNumber)}.pdf`
-      );
-      if (!response.ok) throw new Error("No se pudo descargar el archivo");
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${invoice.invoiceNumber}.pdf`; // Nombre del archivo
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error al descargar el archivo PDF:", error);
-    }
-  };
-
   useEffect(() => {
     getInvoices();
   }, []);
@@ -71,17 +50,16 @@ const InvoiceList = () => {
             <div className="border shadow mb-4 p-3" key={i}>
               <h2>Factura No: {invoice.invoiceNumber}</h2>
               <p>Monto: ${invoice.totalAmount}</p>
-              {/* Botón para descargar el PDF */}
-              <button
-                onClick={() => downloadPDF(invoice)}
+              {/* Abrir el PDF en una nueva pestaña */}
+              <a 
+                href={`http://localhost:8080/uploads/${invoice.invoiceNumber}.pdf`} 
+                target="_blank" 
+                rel="noopener noreferrer" 
                 className="btn btn-success"
               >
-                Descargar Factura
-              </button>
-              <button
-                onClick={() => handleDelete(invoice._id)}
-                className="btn btn-danger"
-              >
+                Ver Factura
+              </a>
+              <button onClick={() => handleDelete(invoice._id)} className="btn btn-danger">
                 Eliminar
               </button>
               <Link to={`/dashboard/admin/edit-invoice/${invoice._id}`} className="btn btn-primary">

@@ -22,7 +22,7 @@ const UserMenu = () => {
             to="/dashboard/user/documents"
             className="list-group-item list-group-item-action"
           >
-            Docuemntos
+            Documentos
           </NavLink>
         </div>
       </div>
