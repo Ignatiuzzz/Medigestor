@@ -11,7 +11,7 @@ const InsurerList = () => {
   // Obtener todas las aseguradoras
   const getAllInsurers = async () => {
     try {
-      const { data } = await axios.get("/api/v1/aseguradoras/get-insurers");
+      const { data } = await axios.get("/api/v1/issuer/get-issuers");
       setInsurers(data.insurers);
     } catch (error) {
       console.error("Error al obtener aseguradoras", error);

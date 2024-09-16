@@ -10,6 +10,38 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Obtener todas las facturas por ID de usuario
+export const getInvoicesByUserController = async (req, res) => {
+  try {
+    const { userId } = req.params;  // Obtener el ID del usuario de los parámetros de la URL
+
+    // Buscar las facturas que coincidan con el ID del usuario
+    const invoices = await invoiceModel.find({ customer: userId }).populate("payment").populate("customer");
+
+    // Si no se encuentran facturas, responder con un mensaje
+    if (!invoices || invoices.length === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "No se encontraron facturas para este usuario",
+      });
+    }
+
+    // Si se encuentran facturas, responder con éxito y los datos de las facturas
+    res.status(200).send({
+      success: true,
+      message: "Facturas encontradas",
+      invoices,
+    });
+  } catch (error) {
+    console.error("Error al obtener las facturas del usuario:", error);
+    res.status(500).send({
+      success: false,
+      message: "Error al obtener las facturas del usuario",
+      error: error.message,
+    });
+  }
+};
+
 // Crear y generar el archivo PDF para la factura
 export const generateInvoicePDF = async (invoiceData) => {
   try {
