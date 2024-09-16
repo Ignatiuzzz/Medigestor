@@ -47,33 +47,6 @@ const HomePage = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-
-  // Obtener Eventos
-  const getAllProducts = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
-      setLoading(false);
-      setProducts(data.products);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
-
-  // Obtener total de Eventos
-  const getTotal = async () => {
-    try {
-      const { data } = await axios.get("/api/v1/product/product-count");
-      setTotal(data?.total);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getTotal();
-  }, []);
   
   useEffect(() => {
     if (page === 1) return;

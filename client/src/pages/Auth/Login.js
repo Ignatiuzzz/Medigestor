@@ -25,12 +25,21 @@ const Login = () => {
       });
       if (res && res.data.success) {
         toast.success(res.data && res.data.message);
+        
+        // Actualizar el contexto de autenticación
         setAuth({
           ...auth,
           user: res.data.user,
           token: res.data.token,
         });
+  
+        // Guardar el objeto auth en localStorage
         localStorage.setItem("auth", JSON.stringify(res.data));
+  
+        // Guardar específicamente el userId en localStorage
+        localStorage.setItem("userId", res.data.user._id);  // Añadir esta línea
+  
+        // Redirigir después del inicio de sesión
         navigate(location.state || "/");
       } else {
         toast.error(res.data.message);
@@ -40,6 +49,7 @@ const Login = () => {
       toast.error("Algo salió mal");
     }
   };
+  
 
   // Toggle password visibility
   const toggleShowPassword = () => {
