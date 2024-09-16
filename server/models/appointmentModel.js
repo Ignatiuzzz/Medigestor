@@ -45,6 +45,11 @@ const appointmentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", // Asegúrate de tener un modelo de "User"
+    required: true,
+  },
 });
 
 // Export the appointment model
