@@ -8,6 +8,8 @@ import {
     getAppointmentByIdController,
     getAppointmentsForCurrentUser,
     getAppointmentsWithoutPayment,
+    getAvailableTimesController,
+    sendManualRemindersController,
     updateAppointmentController,
 } from "../controllers/appointmentController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
@@ -41,5 +43,10 @@ router.delete("/delete-appointment-simple/:id", deleteAppointment); // New simpl
 // Ruta para obtener todas las citas sin ningún filtro (solo administradores)
 router.get("/all-appointments", requireSignIn, isAdmin, getAllAppointments);
 
+// Ruta para enviar recordatorios manualmente
+router.post("/send-manual-reminders", requireSignIn, sendManualRemindersController);
+
+// Ruta para obtener los horarios disponibles de un médico en una fecha específica
+router.get("/get-available-times", getAvailableTimesController); // Nueva ruta para obtener horarios disponibles
 
 export default router;

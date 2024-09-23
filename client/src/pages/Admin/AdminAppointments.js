@@ -89,6 +89,23 @@ const AdminAppointments = () => {
     }
   };
 
+  // Manejar el envío de recordatorios
+  const handleSendReminder = async (appointment) => {
+    try {
+      const { data } = await axios.post("/api/v1/appointment/send-manual-reminders", {
+        date: appointment.appointmentDate, // Puedes enviar la fecha de la cita
+      });
+      if (data?.success) {
+        toast.success("Recordatorio enviado con éxito");
+      } else {
+        toast.error("Error al enviar el recordatorio");
+      }
+    } catch (error) {
+      console.error("Error sending reminder", error);
+      toast.error("Algo salió mal al enviar el recordatorio");
+    }
+  };
+
   return (
     <Layout title="Administrar Citas">
       <div className="container-fluid m-3 p-3 dashboard">
@@ -127,9 +144,12 @@ const AdminAppointments = () => {
                           <button className="btn btn-primary me-2" onClick={() => handleEdit(appointment)}>
                             Editar
                           </button>
-                          <button className="btn btn-danger" onClick={() => handleDelete(appointment._id)}>
+                          <button className="btn btn-danger me-2" onClick={() => handleDelete(appointment._id)}>
                             Eliminar
                           </button>
+                          <button className="btn btn-warning" onClick={() => handleSendReminder(appointment)}>
+                            Recordatorio
+                          </button> {/* Botón para enviar recordatorio */}
                         </td>
                       </tr>
                     ))}

@@ -12,6 +12,7 @@ const Appointment = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
   const [specialties, setSpecialties] = useState([]);
+  const [availableTimes, setAvailableTimes] = useState([]); // Nueva variable de estado para los horarios disponibles
   const [formData, setFormData] = useState({
     doctor: "",
     specialty: "",
@@ -40,22 +41,43 @@ const Appointment = () => {
     fetchSpecialties();
   }, []);
 
-  // Fetch doctors
+  // Fetch doctors by specialty
   useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const { data } = await axios.get("/api/v1/doctor/get-doctors");
-        if (data.success) {
-          setDoctors(data.doctors);
+    if (formData.specialty) {
+      const fetchDoctors = async () => {
+        try {
+          const { data } = await axios.get(`/api/v1/doctor/get-doctors?specialty=${formData.specialty}`);
+          if (data.success) {
+            setDoctors(data.doctors);
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error("Error fetching doctors");
         }
-      } catch (error) {
-        console.log(error);
-        toast.error("Error fetching doctors");
-      }
-    };
+      };
 
-    fetchDoctors();
-  }, []);
+      fetchDoctors();
+    }
+  }, [formData.specialty]);
+
+  // Fetch available times when doctor and date are selected
+  useEffect(() => {
+    if (formData.doctor && formData.appointmentDate) {
+      const fetchAvailableTimes = async () => {
+        try {
+          const { data } = await axios.get(`/api/v1/appointment/get-available-times?doctorId=${formData.doctor}&date=${moment(formData.appointmentDate).format("YYYY-MM-DD")}`);
+          if (data.success) {
+            setAvailableTimes(data.availableTimes);
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error("Error fetching available times");
+        }
+      };
+
+      fetchAvailableTimes();
+    }
+  }, [formData.doctor, formData.appointmentDate]);
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -188,19 +210,23 @@ const Appointment = () => {
               <DatePicker
                 placeholder="Select Appointment Date"
                 style={{ width: "100%" }}
-                onChange={(date) => setFormData((prev) => ({ ...prev, appointmentDate: date }))}
+                onChange={(date) => setFormData((prev) => ({ ...prev, appointmentDate: date }))} 
               />
             </div>
 
-            {/* Appointment Time */}
+            {/* Appointment Time (show only available times) */}
             <div className="mb-3">
-              <Input
-                type="time"
-                name="appointmentTime"
+              <Select
                 placeholder="Select Appointment Time"
-                value={formData.appointmentTime}
-                onChange={handleChange}
-              />
+                onChange={(value) => setFormData((prev) => ({ ...prev, appointmentTime: value }))}
+                style={{ width: "100%" }}
+              >
+                {availableTimes.map((time) => (
+                  <Option key={time} value={time}>
+                    {time}
+                  </Option>
+                ))}
+              </Select>
             </div>
 
             {/* Reason for Visit */}

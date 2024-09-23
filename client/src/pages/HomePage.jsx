@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Homepage.css";
 import Layout from "./../components/Layout/Layout";
+import { Carousel } from 'react-responsive-carousel'; // Importamos el componente Carousel
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Importamos los estilos del carousel
 
 // Importar iconos de Material UI
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -12,6 +14,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 const HomePage = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [campaigns, setCampaigns] = useState([]); // Estado para las campañas de marketing
   const [categories, setCategories] = useState([
     {
       name: "Consultorios",
@@ -47,11 +50,15 @@ const HomePage = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
     if (page === 1) return;
     loadMore();
   }, [page]);
+
+  useEffect(() => {
+    getMarketingCampaigns(); // Obtener las campañas de marketing cuando cargue la página
+  }, []);
 
   // Cargar más Eventos
   const loadMore = async () => {
@@ -63,6 +70,16 @@ const HomePage = () => {
     } catch (error) {
       console.log(error);
       setLoading(false);
+    }
+  };
+
+  // Obtener las campañas de marketing
+  const getMarketingCampaigns = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/campaigns/get-campaigns");
+      setCampaigns(data.campaigns);
+    } catch (error) {
+      console.error("Error al obtener las campañas de marketing", error);
     }
   };
 
@@ -83,7 +100,7 @@ const HomePage = () => {
           <CalendarTodayIcon style={styles.icon} />
           <p>Agenda tu consulta</p>
         </div>
-        <div className="banner-button" style={styles.button} onClick={() => navigate("/revisar-resultados")}>
+        <div className="banner-button" style={styles.button} onClick={() => navigate("/dashboard/user/appointments")}>
           <DescriptionIcon style={styles.icon} />
           <p>Revisa tus resultados</p>
         </div>
@@ -91,7 +108,6 @@ const HomePage = () => {
           <ChatIcon style={styles.icon} />
           <p>Cuéntanos tu experiencia</p>
         </div>
-
       </div>
 
       <div className="container-fluid row mt-3 home-page">
@@ -114,7 +130,37 @@ const HomePage = () => {
               </div>
             ))}
           </div>
+
+          {/* Menú deslizante de campañas de marketing */}
+          <div className="mt-5">
+            <h4 className="text-center">Campañas de Marketing</h4>
+            {campaigns.length === 0 ? (
+              <p className="text-center">No hay campañas disponibles.</p>
+            ) : (
+              <Carousel
+                showThumbs={false}
+                autoPlay={true}
+                infiniteLoop={true}
+                interval={5000}
+              >
+                {campaigns.map((campaign) => (
+                  <div key={campaign._id} onClick={() => navigate(`/campaign/${campaign._id}`)} style={{ cursor: "pointer" }}>
+                    <img
+                      src={`http://localhost:8080/${campaign.image}`}
+                      alt={campaign.title}
+                      style={{ height: "200px", objectFit: "cover" }}
+                    />
+                    <div className="legend">
+                      <h5>{campaign.title}</h5>
+                      <p>{campaign.description.substring(0, 50)}...</p>
+                    </div>
+                  </div>
+                ))}
+              </Carousel>
+            )}
+          </div>
         </div>
+
         <div className="col-md-9 ">
           <h1 className="text-center">Servicios</h1>
           <div className="d-flex flex-wrap justify-content-center">

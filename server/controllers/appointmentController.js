@@ -3,6 +3,7 @@ import Doctor from "../models/doctorModel.js";
 import paymentModel from "../models/Pagos.js";
 import Specialty from "../models/specialtyModel.js";
 
+
 // Obtener citas que no tienen pagos asociados para el usuario autenticado
 export const getAppointmentsWithoutPayment = async (req, res) => {
   try {
@@ -48,26 +49,43 @@ export const createAppointmentController = async (req, res) => {
       return res.status(400).send({ error: "All fields are required" });
     }
 
+    // Verificar si el médico ya tiene una cita en el mismo horario en esa fecha
+    const existingAppointment = await Appointment.findOne({
+      doctor,
+      appointmentDate,  // Solo revisar para la fecha seleccionada
+      appointmentTime,
+    });
+
+    if (existingAppointment) {
+      return res.status(400).send({
+        success: false,
+        message: "El médico ya tiene una cita en este horario",
+      });
+    }
+
+    // Verificar si el doctor existe
     const doctorExists = await Doctor.findById(doctor);
     if (!doctorExists) {
       return res.status(404).send({ error: "Doctor not found" });
     }
 
+    // Verificar si la especialidad existe
     const specialtyExists = await Specialty.findById(specialty);
     if (!specialtyExists) {
       return res.status(404).send({ error: "Specialty not found" });
     }
 
+    // Crear la nueva cita
     const newAppointment = new Appointment({
       doctor,
       specialty,
       patientName,
       patientEmail,
       patientPhone,
-      appointmentDate,
-      appointmentTime,
+      appointmentDate,  // La cita se crea con una fecha específica
+      appointmentTime,  // Y una hora específica
       reasonForVisit,
-      user: req.user._id, // Asignar al usuario autenticado
+      user: req.user._id,  // Asignar al usuario autenticado
     });
 
     await newAppointment.save();
@@ -86,6 +104,7 @@ export const createAppointmentController = async (req, res) => {
     });
   }
 };
+
 
 // Obtener todas las citas del usuario autenticado
 export const getAllAppointmentsController = async (req, res) => {
@@ -284,4 +303,62 @@ export const deleteAppointment = async (req, res) => {
     }
   };
 
+  export const getAvailableTimesController = async (req, res) => {
+    try {
+      const { doctorId, date } = req.query;
+  
+      if (!doctorId || !date) {
+        return res.status(400).send({
+          success: false,
+          message: "Doctor ID and date are required",
+        });
+      }
+  
+      // Verificar si el doctor tiene un horario específico en la base de datos
+      const doctor = await Doctor.findById(doctorId).select("workingHours");
+  
+      // Definir los horarios del médico. Si no tiene uno, usamos el horario por defecto.
+      const doctorTimes = doctor && doctor.workingHours.length > 0 ? doctor.workingHours : getAllTimes();
+  
+      // Buscar todas las citas del médico en la fecha seleccionada
+      const appointments = await Appointment.find({
+        doctor: doctorId,
+        appointmentDate: date,
+      }).select("appointmentTime");
+  
+      // Si no hay citas para esta fecha, devolver todos los horarios del médico
+      if (appointments.length === 0) {
+        return res.status(200).send({
+          success: true,
+          availableTimes: doctorTimes,  // Usa los horarios del médico
+        });
+      }
+  
+      // Si hay citas, excluir solo los horarios ocupados por el médico
+      const bookedTimes = appointments.map(app => app.appointmentTime);
+      const availableTimes = getAvailableTimes(doctorTimes, bookedTimes);
+  
+      return res.status(200).send({
+        success: true,
+        availableTimes,
+      });
+    } catch (error) {
+      console.error("Error in getAvailableTimesController:", error);
+      return res.status(500).send({
+        success: false,
+        message: "Error fetching available times",
+        error: error.message,
+      });
+    }
+  };
+  
+  // Función que devuelve todos los horarios posibles (si el médico no tiene un horario específico)
+  const getAllTimes = () => {
+    return ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+  };
+  
+  // Función para obtener los horarios disponibles excluyendo los ya reservados por el médico
+  const getAvailableTimes = (doctorTimes, bookedTimes) => {
+    return doctorTimes.filter(time => !bookedTimes.includes(time));
+  };
   
