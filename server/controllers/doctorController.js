@@ -41,9 +41,13 @@ export const createDoctorController = async (req, res) => {
 };
 
 // Controller to get all doctors
+// Modificar getDoctorsController para aceptar filtro por especialidad
 export const getDoctorsController = async (req, res) => {
   try {
-    const doctors = await doctorModel.find({}).populate("specialty").sort({ createdAt: -1 });
+    const { specialty } = req.query; // Tomar el parámetro de la especialidad de la consulta
+    const filter = specialty ? { specialty } : {};
+    
+    const doctors = await doctorModel.find(filter).populate("specialty").sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       message: "List of all doctors",
@@ -58,6 +62,7 @@ export const getDoctorsController = async (req, res) => {
     });
   }
 };
+
 
 // Controller to get a single doctor by ID
 export const getDoctorByIdController = async (req, res) => {
@@ -135,3 +140,4 @@ export const deleteDoctorController = async (req, res) => {
     });
   }
 };
+

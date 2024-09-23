@@ -11,7 +11,10 @@ import users from "./routes/usersRoutes.js";
 import aseguradoras from "./routes/aseguradorasRoute.js";
 import pagos from "./routes/pagosRoute.js";
 import facturacion from "./routes/facturacionRoute.js";
+import marketing from "./routes/marketingCampaignRoutes.js";
 import path from 'path'
+import startCronJobs from './cronJobs.js';
+
 // Configure environment variables
 dotenv.config();
 
@@ -35,6 +38,7 @@ app.use("/api/v1/appointment", appointmentRoutes); // Appointment routes
 app.use("/api/v1/issuer", aseguradoras);
 app.use("/api/v1/payment", pagos);
 app.use("/api/v1/invoice", facturacion);
+app.use("/api/v1/campaigns", marketing);
 const __dirname = path.resolve(); // Obtén la ruta absoluta del directorio actual
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Configura la ruta para servir archivos estáticos
 // Test route
@@ -42,8 +46,11 @@ app.get("/", (req, res) => {
   res.send("<h1>Welcome to Medigestor</h1>");
 });
 
+// Iniciar los cron jobs
+startCronJobs();
+
 // PORT
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 
 // Start server
 app.listen(PORT, () => {
