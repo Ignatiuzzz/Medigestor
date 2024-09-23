@@ -44,6 +44,18 @@ const AdminMenu = () => {
              Aseguradoras
           </NavLink>
           <NavLink
+            to="/dashboard/admin/addMarketing"
+            className="list-group-item list-group-item-action"
+          >
+            Agregar Campañas de marketing
+          </NavLink>
+          <NavLink
+            to="/dashboard/admin/listMarketing"
+            className="list-group-item list-group-item-action"
+          >
+             Campañas de marketing
+          </NavLink>
+          <NavLink
             to="/dashboard/admin/documents"
             className="list-group-item list-group-item-action"
           >

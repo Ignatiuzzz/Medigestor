@@ -31,6 +31,10 @@ import EditInsurer from "./pages/Admin/EditInsurer"; // Asegúrate de importar E
 import InsurerList from "./pages/Admin/InsurerList";
 import InvoiceList from "./pages/Admin/InvoimentList";
 import UserInvoiceList from "./pages/user/UserInvomentList";
+import ListMarketingCampaigns from "./pages/Admin/ListMarketingCampaign";
+import AddMarketingCampaign from "./pages/Admin/AddMarketingCamapaign";
+import EditMarketingCampaign from "./pages/Admin/EditMarketingCampaign";
+import CampaignDetails from "./pages/CampaignDetails";
 
 function App() {
   return (
@@ -38,6 +42,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/campaign/:id" element={<CampaignDetails />} /> {/* Ruta para los detalles de la campaña */}
+
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
           <Route path="user/profile" element={<Profile />} />
@@ -52,6 +58,9 @@ function App() {
           <Route path="admin/addPayment" element={<AddPayment />} />
           <Route path="admin/addInvoice/:invoiceId" element={<AddInvoice />} />
           <Route path="admin/invoiceList" element={<InvoiceList />} />
+          <Route path="admin/listMarketing" element={<ListMarketingCampaigns />} />
+          <Route path="admin/addMarketing" element={<AddMarketingCampaign />} />
+          <Route path="admin/editMarketing/:id" element={<EditMarketingCampaign />} />
 
           <Route path="admin/addInsurer" element={<AddInsurer />} />
           <Route path="admin/documents" element={<UserInvoiceList />} />

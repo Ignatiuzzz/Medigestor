@@ -49,6 +49,7 @@ export const sendManualRemindersController = async (req, res) => {
   }
 };
 
+
 // Obtener citas que no tienen pagos asociados para el usuario autenticado
 export const getAppointmentsWithoutPayment = async (req, res) => {
   try {
