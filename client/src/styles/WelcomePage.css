@@ -1,0 +1,89 @@
+.welcome-container {
+  padding: 40px;
+  background: #f4f7fb;
+}
+
+.welcome-header {
+  text-align: center;
+  padding: 50px 20px;
+  background: linear-gradient(135deg, #032446, #007bff);
+  color: white;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.welcome-header h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
+
+.welcome-header p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.highlight {
+  color: #ffdd40;
+}
+
+.features-section, .benefits-section, .testimonials-section, .plans-section {
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.features-section h2, .benefits-section h2, .testimonials-section h2, .plans-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.features-grid, .benefits-grid, .testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-item, .benefit-item, .testimonial-item {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.testimonial-item p {
+  font-style: italic;
+}
+
+.plans-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  max-width: 900px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.plans-table th, .plans-table td {
+  padding: 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.plans-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.plans-table td {
+  background-color: #f9f9f9;
+}
+
+.plans-table td:nth-child(odd) {
+  background-color: #f0f8ff;
+}

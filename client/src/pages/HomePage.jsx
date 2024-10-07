@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Homepage.css";
 import Layout from "./../components/Layout/Layout";
-import { Carousel } from 'react-responsive-carousel'; // Importamos el componente Carousel
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // Importamos los estilos del carousel
-
-// Importar iconos de Material UI
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import ChatIcon from '@mui/icons-material/Chat';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -14,7 +12,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 const HomePage = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [campaigns, setCampaigns] = useState([]); // Estado para las campañas de marketing
+  const [campaigns, setCampaigns] = useState([]);
   const [categories, setCategories] = useState([
     {
       name: "Consultorios",
@@ -52,15 +50,22 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Verificar si el usuario está autenticado
+    const storedAuth = localStorage.getItem("auth");
+    if (!storedAuth || !JSON.parse(storedAuth).token) {
+      navigate("/welcompage"); // Redirigir al login si no está autenticado
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     if (page === 1) return;
     loadMore();
   }, [page]);
 
   useEffect(() => {
-    getMarketingCampaigns(); // Obtener las campañas de marketing cuando cargue la página
+    getMarketingCampaigns();
   }, []);
 
-  // Cargar más Eventos
   const loadMore = async () => {
     try {
       setLoading(true);
@@ -73,7 +78,6 @@ const HomePage = () => {
     }
   };
 
-  // Obtener las campañas de marketing
   const getMarketingCampaigns = async () => {
     try {
       const { data } = await axios.get("/api/v1/campaigns/get-campaigns");
@@ -85,7 +89,6 @@ const HomePage = () => {
 
   return (
     <Layout title={"Medigestor"}>
-      {/* Imagen del banner */}
       <img
         src="/images/banner.png"
         className="banner-img"
@@ -94,7 +97,6 @@ const HomePage = () => {
         style={{ borderRadius: "10px", marginBottom: "20px" }}
       />
 
-      {/* Sección de botones debajo del banner */}
       <div className="banner-buttons-container" style={{ display: 'flex', justifyContent: 'space-around', marginTop: '-50px' }}>
         <div className="banner-button" style={styles.button} onClick={() => navigate("/agendar-cita")}>
           <CalendarTodayIcon style={styles.icon} />
@@ -131,7 +133,6 @@ const HomePage = () => {
             ))}
           </div>
 
-          {/* Menú deslizante de campañas de marketing */}
           <div className="mt-5">
             <h4 className="text-center">Campañas de Marketing</h4>
             {campaigns.length === 0 ? (
@@ -170,8 +171,8 @@ const HomePage = () => {
                   src={`/api/v1/product/product-photo/${p._id}`}
                   className="card-img-top"
                   alt={p.name}
-                  onClick={() => navigate(`/product/${p.slug}`)} // Redirigir al hacer clic en la imagen
-                  style={{ cursor: "pointer" }} // Añadir estilo de cursor
+                  onClick={() => navigate(`/product/${p.slug}`)}
+                  style={{ cursor: "pointer" }}
                 />
                 <div className="card-body">
                   <div className="card-title-price">
@@ -200,7 +201,6 @@ const HomePage = () => {
             ))}
           </div>
 
-          {/* Sección de Especialidades */}
           <div className="mt-5">
             <p className="text-center">
               Medigestor, más de 40 años cuidando tu salud y la de tu familia.
@@ -210,7 +210,7 @@ const HomePage = () => {
                 <img
                   src="/images/consultorio.png"
                   alt="Consultorios"
-                  onClick={() => navigate("/consultorios")} // Redirigir al hacer clic en la imagen
+                  onClick={() => navigate("/consultorios")}
                   style={{ cursor: "pointer" }}
                 />
                 <p>Consultorios</p>
@@ -219,7 +219,7 @@ const HomePage = () => {
                 <img
                   src="/images/emergencia.png"
                   alt="Emergencia"
-                  onClick={() => navigate("/emergencia")} // Redirigir al hacer clic en la imagen
+                  onClick={() => navigate("/emergencia")}
                   style={{ cursor: "pointer" }}
                 />
                 <p>Emergencia</p>
@@ -228,7 +228,7 @@ const HomePage = () => {
                 <img
                   src="/images/cardiovascular.png"
                   alt="Cardiovascular"
-                  onClick={() => navigate("/instituto-cardiovascular")} // Redirigir al hacer clic en la imagen
+                  onClick={() => navigate("/instituto-cardiovascular")}
                   style={{ cursor: "pointer" }}
                 />
                 <p>Instituto Cardiovascular</p>
@@ -237,7 +237,7 @@ const HomePage = () => {
                 <img
                   src="/images/laboratorio.png"
                   alt="Laboratorio"
-                  onClick={() => navigate("/laboratorio")} // Redirigir al hacer clic en la imagen
+                  onClick={() => navigate("/laboratorio")}
                   style={{ cursor: "pointer" }}
                 />
                 <p>Laboratorio</p>
@@ -246,7 +246,7 @@ const HomePage = () => {
                 <img
                   src="/images/imagen.png"
                   alt="Imagen Médica"
-                  onClick={() => navigate("/imagen-medica")} // Redirigir al hacer clic en la imagen
+                  onClick={() => navigate("/imagen-medica")}
                   style={{ cursor: "pointer" }}
                 />
                 <p>Imagen Médica</p>
@@ -255,7 +255,7 @@ const HomePage = () => {
                 <img
                   src="/images/endoscopia.png"
                   alt="Endoscopía"
-                  onClick={() => navigate("/endoscopia")} // Redirigir al hacer clic en la imagen
+                  onClick={() => navigate("/endoscopia")}
                   style={{ cursor: "pointer" }}
                 />
                 <p>Endoscopía</p>
@@ -268,7 +268,6 @@ const HomePage = () => {
   );
 };
 
-// Estilos en línea para los botones con fondo blanco y borde redondeado
 const styles = {
   button: {
     backgroundColor: 'white',

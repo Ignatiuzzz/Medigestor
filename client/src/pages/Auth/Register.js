@@ -66,7 +66,7 @@ const Register = () => {
       });
       if (res && res.data.success) {
         toast.success(res.data && res.data.message);
-        navigate("/login");
+        navigate("/chooseplan");  // Redirige a la página de elección de plan
       } else {
         toast.error(res.data.message);
       }

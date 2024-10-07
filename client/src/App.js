@@ -35,6 +35,8 @@ import ListMarketingCampaigns from "./pages/Admin/ListMarketingCampaign";
 import AddMarketingCampaign from "./pages/Admin/AddMarketingCamapaign";
 import EditMarketingCampaign from "./pages/Admin/EditMarketingCampaign";
 import CampaignDetails from "./pages/CampaignDetails";
+import WelcomePage from "./pages/WelcomePage";
+import ChoosePlanPage from "./pages/ChoosePlanPage";
 
 function App() {
   return (
@@ -81,6 +83,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/welcompage" element={<WelcomePage />} />
+        <Route path="/chooseplan" element={<ChoosePlanPage />} />
+
         <Route path="/policy" element={<Policy />} />
         <Route path="*" element={<Pagenotfound />} />
       </Routes>
